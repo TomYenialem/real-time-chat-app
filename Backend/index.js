@@ -1,12 +1,12 @@
+require("dotenv").config();
 const express = require("express");
-const env = require("dotenv").config();
 const cors = require("cors");
 const loginRoute = require("./Routes/loginRoute");
 const signinRouter = require("./Routes/signinRoute");
 const mongoDb = require("./DB/mongodb");
 
 const app = express();
-
+app.use(express.json())
 app.use("/api", loginRoute);
 app.use("/api", signinRouter);
 
