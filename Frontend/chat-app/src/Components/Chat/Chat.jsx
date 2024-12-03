@@ -9,6 +9,7 @@ import { MdKeyboardVoice } from "react-icons/md";
 import { MdEmojiEmotions } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import EmojiPicker from "emoji-picker-react";
+import { TiMessages } from "react-icons/ti";
 
 export default function Chat() {
   const [emoji, setEmoji] = useState(false);
@@ -29,123 +30,139 @@ export default function Chat() {
   const removeEmoji = () => {
     setEmoji(false);
   };
+
+  const [nochat,usenoChat]=useState(true)
   return (
     <div className="chat">
-      <div className="top">
-        <div className="user-name">
-          <img src={user} alt="" />
-          <div className="text">
-            <h2>Temesgen</h2>
-            <p>Lorem ipsum, dolor sit</p>
+      {nochat ? (
+        < div className="no_chat">
+          <p>Welcome 👋</p>
+          <p>Select a chat to start messaging</p>
+          <TiMessages className="no_msg" />
+        </div>
+      ) : (
+        <>
+          <div className="top">
+            <div className="user-name">
+              <img src={user} alt="" />
+              <div className="text">
+                <h2>Temesgen</h2>
+                <p>Lorem ipsum, dolor sit</p>
+              </div>
+            </div>
+            <div className="address">
+              <FaPhoneAlt />
+              <FaVideo />
+            </div>
           </div>
-        </div>
-        <div className="address">
-          <FaPhoneAlt />
-          <FaVideo />
-        </div>
-      </div>
-      <div className="middle" onClick={removeEmoji} style={{ height: "100px" }}>
-        <div className="send-message own">
-          <div className="text">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-              repellat veritatis commodi, ex impedit, quas hic quasi quae cum in
-              architecto voluptate laboriosam debitis sunt tenetur ut a culpa.
-              Repellat.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="send-message">
-          <img src={user} alt="" sty />
-          <div className="text">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-              repellat veritatis commodi, ex impedit, quas hic quasi quae cum in
-              architecto voluptate laboriosam debitis sunt tenetur ut a culpa.
-              Repellat.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="send-message own">
-          <div className="text">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-              repellat veritatis commodi, ex impedit, quas hic quasi quae cum in
-              architecto voluptate laboriosam debitis sunt tenetur ut a culpa.
-              Repellat.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="send-message">
-          <img src={user} alt="" sty />
-          <div className="text">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-              repellat veritatis commodi, ex impedit, quas hic quasi quae cum in
-              architecto voluptate laboriosam debitis sunt tenetur ut a culpa.
-              Repellat.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="send-message own">
-          <div className="text">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-              repellat veritatis commodi, ex impedit, quas hic quasi quae cum in
-              architecto voluptate laboriosam debitis sunt tenetur ut a culpa.
-              Repellat.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="send-message">
-          <img src={user} alt="" sty />
-          <div className="text">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-              repellat veritatis commodi, ex impedit, quas hic quasi quae cum in
-              architecto voluptate laboriosam debitis sunt tenetur ut a culpa.
-              Repellat.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div ref={endRef}></div>
-      </div>
-
-      <div className="bottom">
-        <div className="cameras">
-          <IoCamera />
-          <IoMdPhotos />
-          <MdKeyboardVoice />
-        </div>
-        <div className="middle-input">
-          <input
-            type="text"
-            placeholder="write message"
-            value={messageInput}
-            onChange={handleInput}
+          <div
+            className="middle"
             onClick={removeEmoji}
-          />
-        </div>
-        <div className="send">
-          <span>
-            <div className="main-emoji">
-              <MdEmojiEmotions onClick={() => setEmoji((prev) => !prev)} />
+            style={{ height: "100px" }}
+          >
+            <div className="send-message own">
+              <div className="text">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Incidunt repellat veritatis commodi, ex impedit, quas hic
+                  quasi quae cum in architecto voluptate laboriosam debitis sunt
+                  tenetur ut a culpa. Repellat.
+                </p>
+                <span>1 min ago</span>
+              </div>
             </div>
-            <div className="emoji-picker">
-              {emoji && <EmojiPicker onEmojiClick={hadleEmojies} />}
+            <div className="send-message">
+              <img src={user} alt="" sty />
+              <div className="text">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Incidunt repellat veritatis commodi, ex impedit, quas hic
+                  quasi quae cum in architecto voluptate laboriosam debitis sunt
+                  tenetur ut a culpa. Repellat.
+                </p>
+                <span>1 min ago</span>
+              </div>
             </div>
-          </span>
-          <span>
-            <IoMdSend />
-          </span>
-        </div>
-      </div>
+            <div className="send-message own">
+              <div className="text">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Incidunt repellat veritatis commodi, ex impedit, quas hic
+                  quasi quae cum in architecto voluptate laboriosam debitis sunt
+                  tenetur ut a culpa. Repellat.
+                </p>
+                <span>1 min ago</span>
+              </div>
+            </div>
+            <div className="send-message">
+              <img src={user} alt="" sty />
+              <div className="text">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Incidunt repellat veritatis commodi, ex impedit, quas hic
+                  quasi quae cum in architecto voluptate laboriosam debitis sunt
+                  tenetur ut a culpa. Repellat.
+                </p>
+                <span>1 min ago</span>
+              </div>
+            </div>
+            <div className="send-message own">
+              <div className="text">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Incidunt repellat veritatis commodi, ex impedit, quas hic
+                  quasi quae cum in architecto voluptate laboriosam debitis sunt
+                  tenetur ut a culpa. Repellat.
+                </p>
+                <span>1 min ago</span>
+              </div>
+            </div>
+            <div className="send-message">
+              <img src={user} alt="" sty />
+              <div className="text">
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Incidunt repellat veritatis commodi, ex impedit, quas hic
+                  quasi quae cum in architecto voluptate laboriosam debitis sunt
+                  tenetur ut a culpa. Repellat.
+                </p>
+                <span>1 min ago</span>
+              </div>
+            </div>
+            <div ref={endRef}></div>
+          </div>
+
+          <div className="bottom">
+            <div className="cameras">
+              <IoCamera />
+              <IoMdPhotos />
+              <MdKeyboardVoice />
+            </div>
+            <div className="middle-input">
+              <input
+                type="text"
+                placeholder="write message"
+                value={messageInput}
+                onChange={handleInput}
+                onClick={removeEmoji}
+              />
+            </div>
+            <div className="send">
+              <span>
+                <div className="main-emoji">
+                  <MdEmojiEmotions onClick={() => setEmoji((prev) => !prev)} />
+                </div>
+                <div className="emoji-picker">
+                  {emoji && <EmojiPicker onEmojiClick={hadleEmojies} />}
+                </div>
+              </span>
+              <span>
+                <IoMdSend />
+              </span>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
