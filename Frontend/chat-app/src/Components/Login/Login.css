@@ -7,14 +7,24 @@
   align-items: center;
   width: 100%;
   max-width: 400px;
-  margin: 30px auto;
+  margin: 40px auto;
   padding: 20px;
   background-color: rgba(17,25,40,.8);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 20px 10px 8px rgba(32, 151, 190, 0.1),20px 10px 8px rgba(181, 8, 8, 0.1);
   color: white;
   height: 90%;
 
+  transition: all 0.3s ease-in-out;
+
+
+}
+.all{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 100%; */
+    margin: 0 auto;
 }
 
 
@@ -81,4 +91,11 @@
   width: 100%;
   height: 100%;
   border-radius: 20px;
+}
+
+.login-container{
+justify-content: center;
+align-items: center;
+height: 50%;
+
 }

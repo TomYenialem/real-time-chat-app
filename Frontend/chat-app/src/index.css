@@ -4,11 +4,15 @@
   box-sizing: border-box;
 }
 body{
-  background-image: url(../src/assets/images/bg.avif);
+ 
+  background-image: url(../src/assets/images/bg2.avif);
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
 }
 .container{
   width: 90vw;

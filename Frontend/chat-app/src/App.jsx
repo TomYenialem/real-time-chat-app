@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
+import User from './Components/UserInfo/User';
+import Chat from './Components/Chat/Chat';
+import Login from './Components/Login/Login';
 
 function App() {
-const [showChat, setShowCaht] = useState(false);
+const [showChat, setShowCaht] = useState(true);
 const [show, setShow] = useState(false);
 
   return (
