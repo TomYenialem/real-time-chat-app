@@ -1,24 +1,21 @@
-const mongoose = require('mongoose')
-
+const mongoose = require("mongoose");
 
 const conversationSchmema = new mongoose.Schema({
   message: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "messageTable",
-      default:[]
+      ref: "message",
+      default: [],
     },
   ],
   participants: [
     {
-
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      
-    }]
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
+const Conversation = mongoose.model("Conversation", conversationSchmema);
 
-const conversation=mongoose.model('Conversation',conversationSchmema)
-
-module.exports=conversation
+module.exports = Conversation;
