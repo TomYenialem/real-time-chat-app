@@ -117,7 +117,7 @@ export default function SignIn() {
               onChange={(e) => setConfirmPass(e.target.value)}
               // required
             />
-            <button type="submit">{isLoading?<BeatLoader  color="white"/>:'Register'}</button>
+            <button type="submit">{isLoading?<BeatLoader  color="white" size={10}/>:'Register'}</button>
           </form>
           <p>
             Already have an account?{" "}

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Api from "../Api/Axios";
 import toast from "react-hot-toast";
 import { authContext } from "../Context/ContextApi";
+import { BeatLoader } from "react-spinners";
 
 const Auth = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +70,9 @@ const Auth = () => {
               // required
             />
 
-            <button type="submit">Login</button>
+            <button type="submit">
+              {isLoading ? <BeatLoader color="white"  size={10}/> : "Login"}
+            </button>
           </form>
           <p>
             <>

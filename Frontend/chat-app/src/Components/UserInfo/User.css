@@ -1,7 +1,8 @@
 .user{
 
     flex: 1;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     height: 90vh;
