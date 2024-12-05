@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Setting.css";
 import users from "../../assets/images/user.jpg";
 import { IoMdSettings } from "react-icons/io";
@@ -7,16 +7,31 @@ import { FaToggleOff } from "react-icons/fa6";
 import { FaToggleOn } from "react-icons/fa";
 import { IoMdContact } from "react-icons/io";
 import { FaFacebookMessenger } from "react-icons/fa";
+import Api from "../Api/Axios";
+import { authContext } from "../Context/ContextApi";
+import { toast } from "react-toastify";
 
 export default function Setting({ show, setShow }) {
+  const{setAuthUser}=useContext(authContext)
   const handleShowToggle = () => {
     setShow((prev) => (prev === true ? false : true));
   };
+   const logout = async () => {
+  try {
+    const data = await Api.post("/logout");
+    // toast.success(data);
+    console.log(data)
+    localStorage.removeItem("token");
+    setAuthUser(null);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
   return (
     <div className="setting">
       <div className="logout">
-        <button>Logout</button>
+        <button onClick={logout}>Logout</button>
         <span onClick={handleShowToggle}>
           {show ? <FaToggleOn /> : <FaToggleOff />}
         </span>

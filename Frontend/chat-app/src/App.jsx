@@ -1,32 +1,39 @@
-import { useState } from 'react'
+import { useContext, useState } from "react";
 
-import './App.css'
-import User from './Components/UserInfo/User';
-import Chat from './Components/Chat/Chat';
-import Login from './Components/Login/Login';
-import Setting from './Components/Setting/Setting';
+import "./App.css";
+import Login from "./Components/Login/Login";
+
+import { Toaster } from "react-hot-toast";
+import { Routes, Route,useNavigate,Navigate } from "react-router-dom";
+import SignIn from "./Components/SignIn/SignIn";
+import { authContext } from "./Components/Context/ContextApi";
+import Home from "./Components/Hooks/Home";
 
 function App() {
-const [showChat, setShowCaht] = useState(false);
-const [show, setShow] = useState(false);
-
+  const{authUser}=useContext(authContext)
+  const [show, setShow] = useState(false);
   return (
-    <>
-      <div className={` ${show ? "bg" : "container"}`}>
-        {showChat ? (
-          <>
-            <Login />
-          </>
-        ) : (
-          <div className="body-lists">
-            <User />
-            <Chat />
-            <Setting show={show} setShow={setShow} />
-          </div>
-        )}
-      </div>
-    </>
+    <div className={` ${show ? "bg" : "container"}`}>
+      <Routes>
+        <Route path="/" element={authUser ?<Navigate to={'/home'}/>:<Login/>} />
+        <Route
+          path="/signin"
+          element={authUser ? <Navigate to={'/home'}/>:<SignIn/>}
+        />
+        <Route
+          path="/home"
+          element={
+            <div className="body-lists">
+              {authUser?
+            <Home show={show} setShow={setShow}/>:<Navigate to={'/'}/>
+              }
+            </div>
+          }
+        />
+      </Routes>
+      <Toaster />
+    </div>
   );
 }
 
-export default App
+export default App;

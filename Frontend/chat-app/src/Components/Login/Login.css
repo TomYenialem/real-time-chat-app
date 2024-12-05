@@ -14,7 +14,7 @@
   box-shadow: 20px 10px 8px rgba(32, 151, 190, 0.1),20px 10px 8px rgba(181, 8, 8, 0.1);
   color: white;
   height: 90%;
-
+  overflow-y: auto;
   transition: all 0.3s ease-in-out;
 
 
@@ -58,6 +58,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .auth-container button:hover {

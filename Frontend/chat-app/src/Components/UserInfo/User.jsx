@@ -6,8 +6,10 @@ import { BsThreeDots } from "react-icons/bs";
 import { CiEdit } from "react-icons/ci";
 import { FaSearch } from "react-icons/fa";
 
+
 export default function User() {
   const [add, setAdd] = useState(false);
+
   return (
     <div className="user">
       <div className="user-info">
