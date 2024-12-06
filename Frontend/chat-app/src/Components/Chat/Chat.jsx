@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Chat.css";
 import user from "../../assets/images/user.jpg";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -10,10 +10,13 @@ import { MdEmojiEmotions } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import EmojiPicker from "emoji-picker-react";
 import { TiMessages } from "react-icons/ti";
+import { authContext } from "../Context/ContextApi";
 
 export default function Chat() {
   const [emoji, setEmoji] = useState(false);
   const [messageInput, setMessageInput] = useState("");
+
+    const { coversation, authUser } = useContext(authContext);
   const endRef = useRef(null);
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -31,12 +34,11 @@ export default function Chat() {
     setEmoji(false);
   };
 
-  const [nochat,usenoChat]=useState(true)
   return (
     <div className="chat">
-      {nochat ? (
-        < div className="no_chat">
-          <p>Welcome 👋</p>
+      {!coversation ? (
+        <div className="no_chat">
+          <p>Welcome {authUser.username}👋</p>
           <p>Select a chat to start messaging</p>
           <TiMessages className="no_msg" />
         </div>
@@ -46,7 +48,7 @@ export default function Chat() {
             <div className="user-name">
               <img src={user} alt="" />
               <div className="text">
-                <h2>Temesgen</h2>
+                <h2>{coversation.username}</h2>
                 <p>Lorem ipsum, dolor sit</p>
               </div>
             </div>

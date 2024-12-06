@@ -9,6 +9,7 @@ import {BeatLoader} from 'react-spinners'
 import { set } from "mongoose";
 import { authContext } from "../Context/ContextApi.jsx";
 
+
 export default function SignIn() {
   const{ setAuthUser}=useContext(authContext)
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +18,7 @@ export default function SignIn() {
   const [username, setUserNames] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const[showPassword,setShowPassword] = useState(true);
+
 
 
   const handleRegisterSubmit = async (e) => {
@@ -50,10 +52,9 @@ export default function SignIn() {
       });
       console.log(JSON.stringify(data.user));
       toast.success("Signed In Successfully");
-      // navigate('/home');
+
       localStorage.setItem("token", JSON.stringify(data.user));
       setAuthUser(data.user);
-      navigate('/home');
       // console.log(localStorage.setItem("token", JSON.stringify(data.user)));
 
     } catch (error) {

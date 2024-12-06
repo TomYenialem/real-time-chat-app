@@ -24,7 +24,7 @@ const Auth = () => {
     try {
       const { data } = await Api.post("/login", { email, password });
       toast.success("Logged in successfully!");
-      console.log(data)
+      // console.log(data)
       localStorage.setItem("token", JSON.stringify(data.user));
       setAuthUser(data.user); 
       

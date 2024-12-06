@@ -12,21 +12,21 @@ import { authContext } from "../Context/ContextApi";
 import { toast } from "react-toastify";
 
 export default function Setting({ show, setShow }) {
-  const{setAuthUser}=useContext(authContext)
+  const { setAuthUser, authUser } = useContext(authContext);
   const handleShowToggle = () => {
     setShow((prev) => (prev === true ? false : true));
   };
-   const logout = async () => {
-  try {
-    const data = await Api.post("/logout");
-    // toast.success(data);
-    console.log(data)
-    localStorage.removeItem("token");
-    setAuthUser(null);
-  } catch (error) {
-    console.log(error);
-  }
-}
+  const logout = async () => {
+    try {
+      const data = await Api.post("/logout");
+      // toast.success(data);
+      console.log(data);
+      localStorage.removeItem("token");
+      setAuthUser(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="setting">
@@ -37,8 +37,8 @@ export default function Setting({ show, setShow }) {
         </span>
       </div>
       <div className="users">
-        <img src={users} alt="" />
-        <h2>Temesegen</h2>
+        <img src={authUser?.profilepic || users} alt="" />
+        <h2>{authUser.username}</h2>
         <p>Lorem ipsum dolor sit amet consectetur </p>
       </div>
       <div className="chat-setting-icons">

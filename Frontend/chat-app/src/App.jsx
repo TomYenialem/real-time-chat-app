@@ -4,10 +4,10 @@ import "./App.css";
 import Login from "./Components/Login/Login";
 
 import { Toaster } from "react-hot-toast";
-import { Routes, Route,useNavigate,Navigate } from "react-router-dom";
+import { Routes, Route,Navigate } from "react-router-dom";
 import SignIn from "./Components/SignIn/SignIn";
 import { authContext } from "./Components/Context/ContextApi";
-import Home from "./Components/Hooks/Home";
+import Home from "./Components/Home/Home";
 
 function App() {
   const{authUser}=useContext(authContext)
