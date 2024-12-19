@@ -6,7 +6,6 @@ import { FaRegEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import './SignIn.css'
 import {BeatLoader} from 'react-spinners'
-import { set } from "mongoose";
 import { authContext } from "../Context/ContextApi.jsx";
 
 
@@ -18,7 +17,6 @@ export default function SignIn() {
   const [username, setUserNames] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const[showPassword,setShowPassword] = useState(true);
-
 
 
   const handleRegisterSubmit = async (e) => {

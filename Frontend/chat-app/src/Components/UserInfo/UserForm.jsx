@@ -6,7 +6,7 @@ function UserForm({ user }) {
  
   const { coversation, setConversation } = useContext(authContext);
   const isSelected = coversation?._id === user._id;
-  console.log(isSelected);
+
   return (
     <div>
       <div className={`items ${isSelected ?'bg-item':''}` } key={user.id} onClick={()=>setConversation(user)}>

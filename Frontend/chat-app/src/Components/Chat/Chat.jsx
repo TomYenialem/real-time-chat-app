@@ -11,21 +11,58 @@ import { IoMdSend } from "react-icons/io";
 import EmojiPicker from "emoji-picker-react";
 import { TiMessages } from "react-icons/ti";
 import { authContext } from "../Context/ContextApi";
+import getAllmessages from "../Hooks/getAllmessages";
+import toast from "react-hot-toast";
+import Api from "../Api/Axios";
+import {ClipLoader} from 'react-spinners'
+import { formatChatTime } from "../Time";
+
 
 export default function Chat() {
+
   const [emoji, setEmoji] = useState(false);
+  const { allmessages, loading,setAllmessages } = getAllmessages();
+  const [isloading, setIsloading] = useState(false);
   const [messageInput, setMessageInput] = useState("");
+  const { coversation, authUser } =
+    useContext(authContext);
 
-    const { coversation, authUser } = useContext(authContext);
-  const endRef = useRef(null);
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  const sendMessagetoUser = async () => {
+    if (messageInput === ""){
+      toast.error("Please enter a message");
+      return;
+    }
+    try {
+      setIsloading(true);
+      const response = await Api.post(
+        `/sentmesaage/${coversation._id}`,
+        { message: messageInput },
 
-  const handleInput = (e) => {
-    setMessageInput(e.target.value);
-    console.log(e.target.value);
+        {
+          withCredentials: true,
+        }
+      ); 
+       
+       setAllmessages([...allmessages, response.data]);
+       setMessageInput('')
+      toast.success("Sent mesaage");
+    
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+      if (error.response) {
+        toast.error(error.response.data.msg || "An error occurred");
+      } else {
+        toast.error("Network error. Please try again later.");
+      }
+    } finally {
+      setIsloading(false);
+    }
   };
+  const endRef = useRef(null);
+ useEffect(() => {
+   endRef.current?.scrollIntoView({ behavior: "smooth" });
+ }, [allmessages]);
+
   const hadleEmojies = (e) => {
     console.log(e.emoji);
     setMessageInput([messageInput, e.emoji].join(""));
@@ -48,7 +85,7 @@ export default function Chat() {
             <div className="user-name">
               <img src={user} alt="" />
               <div className="text">
-                <h2>{coversation.username}</h2>
+                <h2>To:{coversation.username}</h2>
                 <p>Lorem ipsum, dolor sit</p>
               </div>
             </div>
@@ -57,80 +94,27 @@ export default function Chat() {
               <FaVideo />
             </div>
           </div>
-          <div
-            className="middle"
-            onClick={removeEmoji}
-            style={{ height: "100px" }}
-          >
-            <div className="send-message own">
-              <div className="text">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Incidunt repellat veritatis commodi, ex impedit, quas hic
-                  quasi quae cum in architecto voluptate laboriosam debitis sunt
-                  tenetur ut a culpa. Repellat.
-                </p>
-                <span>1 min ago</span>
-              </div>
-            </div>
-            <div className="send-message">
-              <img src={user} alt="" sty />
-              <div className="text">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Incidunt repellat veritatis commodi, ex impedit, quas hic
-                  quasi quae cum in architecto voluptate laboriosam debitis sunt
-                  tenetur ut a culpa. Repellat.
-                </p>
-                <span>1 min ago</span>
-              </div>
-            </div>
-            <div className="send-message own">
-              <div className="text">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Incidunt repellat veritatis commodi, ex impedit, quas hic
-                  quasi quae cum in architecto voluptate laboriosam debitis sunt
-                  tenetur ut a culpa. Repellat.
-                </p>
-                <span>1 min ago</span>
-              </div>
-            </div>
-            <div className="send-message">
-              <img src={user} alt="" sty />
-              <div className="text">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Incidunt repellat veritatis commodi, ex impedit, quas hic
-                  quasi quae cum in architecto voluptate laboriosam debitis sunt
-                  tenetur ut a culpa. Repellat.
-                </p>
-                <span>1 min ago</span>
-              </div>
-            </div>
-            <div className="send-message own">
-              <div className="text">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Incidunt repellat veritatis commodi, ex impedit, quas hic
-                  quasi quae cum in architecto voluptate laboriosam debitis sunt
-                  tenetur ut a culpa. Repellat.
-                </p>
-                <span>1 min ago</span>
-              </div>
-            </div>
-            <div className="send-message">
-              <img src={user} alt="" sty />
-              <div className="text">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Incidunt repellat veritatis commodi, ex impedit, quas hic
-                  quasi quae cum in architecto voluptate laboriosam debitis sunt
-                  tenetur ut a culpa. Repellat.
-                </p>
-                <span>1 min ago</span>
-              </div>
-            </div>
+          <div className="middle" onClick={removeEmoji}>
+            {allmessages?.length > 0 ? (
+              allmessages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`send-message ${
+                    message.senderId === authUser._id ? "own" : ""
+                  }`}
+                >
+                  {message.senderId !== authUser._id && (
+                    <img src={user} alt="user" />
+                  )}
+                  <div className="text">
+                    <p>{message.message}</p>
+                    <span>{formatChatTime(message.timestamp)}</span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Send a message to start the conversation</p>
+            )}
             <div ref={endRef}></div>
           </div>
 
@@ -144,8 +128,9 @@ export default function Chat() {
               <input
                 type="text"
                 placeholder="write message"
+                name=" message"
                 value={messageInput}
-                onChange={handleInput}
+                onChange={(e) => setMessageInput(e.target.value)}
                 onClick={removeEmoji}
               />
             </div>
@@ -159,7 +144,15 @@ export default function Chat() {
                 </div>
               </span>
               <span>
-                <IoMdSend />
+                {isloading ? (
+                  <ClipLoader />
+                ) : (
+                  <IoMdSend
+                    onClick={() => {
+                      if (!isloading) sendMessagetoUser();
+                    }}
+                  />
+                )}
               </span>
             </div>
           </div>

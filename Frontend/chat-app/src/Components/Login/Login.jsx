@@ -22,9 +22,15 @@ const Auth = () => {
       return;
     }
     try {
-      const { data } = await Api.post("/login", { email, password });
+      const { data } = await Api.post(
+        "/login",
+        { email, password },
+        {
+          withCredentials: true,
+        }
+      );
       toast.success("Logged in successfully!");
-      // console.log(data)
+      console.log(data)
       localStorage.setItem("token", JSON.stringify(data.user));
       setAuthUser(data.user); 
       

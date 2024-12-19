@@ -8,16 +8,16 @@ export default function useLogout() {
   const navigate = useNavigate();
   const { setAuthUser } = useContext(authContext);
 
-const logout = async () => {
-  try {
-    const data = await Api.post("/logout", {});
-    toast.success(data);
-    localStorage.removeItem("token");
-    setAuthUser(null);
-  } catch (error) {
-    console.log(error);
-  }
+  const logout = async () => {
+    try {
+      const data = await Api.post("/logout");
+      toast.success(data);
+      localStorage.removeItem("token");
+      setAuthUser(null);
+    } catch (error) {
+      console.log(error);
+    }
 
-  return { logout };
-}
+    return { logout };
+  };
 }
