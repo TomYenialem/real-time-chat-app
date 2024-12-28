@@ -1,11 +1,12 @@
 const { StatusCodes } = require("http-status-codes");
 const User = require("../models/userModel");
+
 const bycrpt = require("bcryptjs");
 const createToken = require("../middleware/tooken");
 const signinController = async (req, res) => {
-  const { name, email, password, confirmPass, username } = req.body;
+  const { email, password, confirmPass, username } = req.body;
   // res.send('hello')
-  if (!name || !email || !password || !confirmPass || !username) {
+  if (!email || !password || !confirmPass || !username) {
     res
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: "all fields must be provided" });
@@ -14,11 +15,17 @@ const signinController = async (req, res) => {
   try {
     if (password !== confirmPass) {
       return res
-        .status(StatusCodes.ACCEPTED)
+        .status(StatusCodes.BAD_REQUEST)
         .json({ msg: "please confirm your password" });
     }
 
     const checkUser = await User.findOne({ email });
+    const checkuserName = await User.findOne({ username });
+    if (checkuserName) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: "username already exists" });
+    }
     if (checkUser) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -32,15 +39,15 @@ const signinController = async (req, res) => {
     const newUser = new User({
       username,
       email,
-      name,
       password: hashPass,
       profilepic: ProfilePic,
     });
 
+    token: createToken(newUser._id, res);
     if (newUser) {
-    //   createToken(newUser._id, res);
       await newUser.save();
       return res.status(StatusCodes.CREATED).json({
+        user: newUser,
         msg: "user created successfully",
       });
     }
@@ -52,15 +59,16 @@ const signinController = async (req, res) => {
   }
 };
 
-
-const getUsers=async(req,res)=>{
-  try{
-    const users = await User.find()
-    res.json(users)
-  }catch(error){
+const getUsers = async (req, res) => {
+  try {
+    const auth_user = req.user._id;
+    // const users = await User.find({ _id: { $ne: auth_user } }); // Exclude the authenticated user
+    const users = await User.find();
+    res.status(StatusCodes.OK).json(users);
+  } catch (error) {
     console.log(error.message);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json('Server Error')
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Server Error");
   }
-}
+};
 
-module.exports = {getUsers,signinController}
+module.exports = { getUsers, signinController };

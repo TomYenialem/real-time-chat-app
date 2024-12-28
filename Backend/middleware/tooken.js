@@ -5,9 +5,10 @@ const createToken = (userId, res) => {
     expiresIn: "30d",
   });
   res.cookie("jwt_token", token, {
-    httpOnly: true, //This option makes the cookie inaccessible to JavaScript running on the client-side (e.g., in the browser console).
-    expires: new Date(Date.now() + 3600000 * 24 * 30), //equals to 30days 1hr equals to 3600000miliseconds
-    secure: false, // set to true if your site is served over HTTPS
+    httpOnly: true,
+    secure: false, // Secure only in production
+    sameSite: "strict",
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
 };
 module.exports = createToken;

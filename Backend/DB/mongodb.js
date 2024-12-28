@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+mongoose.set("bufferTimeoutMS", 20000);
 const mongoDb = async () => {
   try {
     await mongoose.connect(process.env.MONGO_url);

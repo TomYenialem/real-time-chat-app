@@ -17,7 +17,7 @@ const auth = async (req, res, next) => {
       if (err) {
         return res
           .status(StatusCodes.UNAUTHORIZED)
-          .json({ msg: "Token invalid" });
+          .json({ msg: "Token invalid" }); 
       }
 
       const userId = decoded.userId;

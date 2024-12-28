@@ -1,18 +1,13 @@
-const { StatusCodes } = require("http-status-codes")
+const { StatusCodes } = require("http-status-codes");
 
-const logout=(req,res)=>{
-try {
-    
-//  res.cookie('jwt-token','',{maxAge:0})
-//    res.clearCookie("jwt-token", {maxAge:0})
-   res.clearCookie("jwt_token", { maxAge: 0, path: "/" });
-
-res.status(StatusCodes.ACCEPTED).json({msg:'succesflluy logout'})
-} catch (error) {
-    console.log(error)
-    res.status(StatusCodes.BAD_REQUEST).json({msg:'internal server error'})
-
-}
-}
+const logout = (req, res) => {
+  try {
+    res.clearCookie("jwt_token", { path: "/" });
+    res.status(StatusCodes.ACCEPTED).json({ msg: "Successfully logged out" });
+  } catch (error) {
+    console.error("Logout Error:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: "Internal server error" });
+  }
+};
 
 module.exports = logout;

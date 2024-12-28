@@ -1,16 +1,21 @@
 const { StatusCodes } = require("http-status-codes");
 const messageTable = require("../models/messageModel");
 const Conversation = require("../models/convModule");
+const { reciverSoketId, io } = require("../Soket/soket");
 
 const messages = async (req, res) => {
-  try {
-    const { message } = req.body;
-    const { id: reciver_id } = req.params;
-    const sender_id = req.user._id; //from the middleware function
-    console.log(sender_id);
+  const { message } = req.body;
+  const { id: reciver_id } = req.params;
+  const sender_id = req.user._id; //from the middleware function
+  if (!message) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "Please enter a message" });
+  }
 
+  try {
     let connversion = await Conversation.findOne({
-      participants: { $all: [reciver_id, sender_id] }
+      participants: { $all: [reciver_id, sender_id] },
     }).populate("message");
     if (!connversion) {
       connversion = await Conversation.create({
@@ -19,8 +24,8 @@ const messages = async (req, res) => {
     }
 
     const newmessage = new messageTable({
-      sender: reciver_id,
-      receiver: sender_id,
+      sender: sender_id,
+      receiver: reciver_id,
       message: message,
     });
     if (newmessage) {
@@ -28,6 +33,13 @@ const messages = async (req, res) => {
     }
     await newmessage.save();
     await connversion.save();
+
+    // soket functionality
+    const reciverId = reciverSoketId(reciver_id);
+    // io.to used to sent evets to sepcific client
+    if (reciverId) {
+      io.to(reciverId).emit("newMessage", newmessage);
+    }
 
     return res.status(StatusCodes.CREATED).json(newmessage);
   } catch (error) {
@@ -40,18 +52,19 @@ const messages = async (req, res) => {
 
 const getMessages = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id: reciver_id } = req.params;
     const sender = req.user._id;
     const conversation = await Conversation.findOne({
-      participants: { $all: [id, sender] },
+      participants: { $all: [reciver_id, sender] },
     }).populate("message");
-    res.status(StatusCodes.ACCEPTED).json(conversation.message);
-    if(!conversation){
-        res.status(StatusCodes.ACCEPTED).json([])
+    // console.log(conversation);
+    if (!conversation) {
+      return res.status(StatusCodes.ACCEPTED).json([]);
     }
+    return res.status(StatusCodes.ACCEPTED).json(conversation);
   } catch (error) {
-   console.log(error);
-   res.status(StatusCodes.BAD_REQUEST).json({ msg: "internal server error" });
+    console.log(error);
+    res.status(StatusCodes.BAD_REQUEST).json({ msg: "internal server error" });
   }
 };
 
