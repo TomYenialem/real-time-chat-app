@@ -14,24 +14,33 @@ export default function User() {
   const { users } = getUsers();
   const { authUser } = useContext(authContext);
 
+  const [search, setSearch] = useState("");
+
+  const searchUser = users.filter((user) =>
+    user.username.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handelSearch = (e) => {
+    setSearch(e.target.value);
+  };
   return (
     <div className="user">
       <div className="user-info">
         <div className="user-img">
           <img src={authUser?.profilepic || usersImg} alt="" />
-          <span>{authUser.username}</span>
-        </div>
-        <div className="user-icons">
-          <BsThreeDots />
-          <IoVideocam />
-          <CiEdit />
+          <span>{authUser?.name}</span>
         </div>
       </div>
 
       <div className="user-search">
         <div className="search-bar">
           <FaSearch className="sr" />
-          <input type="text" placeholder="search" />
+          <input
+            type="text"
+            placeholder="search"
+            value={search}
+            onChange={handelSearch}
+          />
         </div>
         <div className="add">
           <h1 onClick={() => setAdd((prev) => !prev)}>{!add ? "+" : "-"}</h1>
@@ -39,10 +48,8 @@ export default function User() {
       </div>
 
       <div className="item-group">
-        {users.map((user) => {
-          return (
-              <UserForm user={user} />
-          );
+        {searchUser.map((user,index) => {
+          return <UserForm user={user}  key={index}/>;
         })}
       </div>
     </div>

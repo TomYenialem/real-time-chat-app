@@ -7,6 +7,7 @@ import Api from "../Api/Axios";
 import toast from "react-hot-toast";
 import { authContext } from "../Context/ContextApi";
 import { BeatLoader } from "react-spinners";
+import welcomemessages from "../../assets/sound/welcome.mp3"
 
 const Auth = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -16,11 +17,12 @@ const Auth = () => {
 
   const handleLoginSubmit = async(e) => {
     e.preventDefault()
-    setIsLoading(true);
     if(!email || ! password) {
       toast.error("Please fill in all fields");
       return;
+
     }
+    setIsLoading(true);
     try {
       const { data } = await Api.post(
         "/login",
@@ -32,6 +34,9 @@ const Auth = () => {
       toast.success("Logged in successfully!");
       console.log(data)
       localStorage.setItem("token", JSON.stringify(data.user));
+      const welcome=new Audio(welcomemessages)
+      welcome.play()
+
       setAuthUser(data.user); 
       
     } catch (error) {

@@ -10,14 +10,17 @@ export default function useLogout() {
 
   const logout = async () => {
     try {
-      const data = await Api.post("/logout");
-      toast.success(data);
+      const response = await Api.post("/logout");
+      toast.success(response.data.msg); 
+    } catch (error) {
+      console.error("Logout Error:", error);
+      toast.error("Failed to log out. Please try again.");
+    } finally {
       localStorage.removeItem("token");
       setAuthUser(null);
-    } catch (error) {
-      console.log(error);
+      navigate("/login"); 
     }
-
-    return { logout };
   };
+
+  return { logout };
 }

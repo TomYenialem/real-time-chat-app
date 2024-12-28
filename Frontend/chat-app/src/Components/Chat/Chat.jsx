@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Chat.css";
-import user from "../../assets/images/user.jpg";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaVideo } from "react-icons/fa6";
 import { IoCamera } from "react-icons/io5";
@@ -15,17 +14,37 @@ import getAllmessages from "../Hooks/getAllmessages";
 import toast from "react-hot-toast";
 import Api from "../Api/Axios";
 import {ClipLoader} from 'react-spinners'
-import { formatChatTime } from "../Time";
-
+import ChatForm from "./ChatForm";
+import soketMessages from "../Hooks/soketMessages";
+import sendPhoto from "../Hooks/sendPhoto";
 
 export default function Chat() {
+  soketMessages()
 
   const [emoji, setEmoji] = useState(false);
-  const { allmessages, loading,setAllmessages } = getAllmessages();
+  const{sendPhotoMessages}=sendPhoto()
+  const { message, loading, setMessage } = getAllmessages();
   const [isloading, setIsloading] = useState(false);
   const [messageInput, setMessageInput] = useState("");
-  const { coversation, authUser } =
-    useContext(authContext);
+  const {
+    coversation,
+    authUser,
+    setConversation,
+  } = useContext(authContext);
+
+
+
+  // send message and images
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setMessageInput({ ...messageInput, imageUrl: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const sendMessagetoUser = async () => {
     if (messageInput === ""){
@@ -42,10 +61,11 @@ export default function Chat() {
           withCredentials: true,
         }
       ); 
-       
-       setAllmessages([...allmessages, response.data]);
-       setMessageInput('')
-      toast.success("Sent mesaage");
+       console.log(response.data)
+       setMessage([...message, response.data]);
+       setMessageInput("");
+
+      // toast.success("Sent mesaage");
     
     } catch (error) {
       console.error("Error during sign-in:", error);
@@ -58,10 +78,28 @@ export default function Chat() {
       setIsloading(false);
     }
   };
+
+
+
+  // enable function with enter keyword
+  const handleKeyPress=(e)=>{
+    if(e.key==='Enter'){
+      sendMessagetoUser();
+    }
+  }
+
+
+  // unmount the coversation after logout to reset the selected user
+  useEffect(()=>{
+    return ()=>{
+     setConversation(null);
+    }
+  },[setConversation])
+
   const endRef = useRef(null);
  useEffect(() => {
    endRef.current?.scrollIntoView({ behavior: "smooth" });
- }, [allmessages]);
+ }, [message]);
 
   const hadleEmojies = (e) => {
     console.log(e.emoji);
@@ -70,6 +108,11 @@ export default function Chat() {
   const removeEmoji = () => {
     setEmoji(false);
   };
+
+    const handleGalleryClick = () => {
+      document.getElementById("photo").click(); 
+     
+    };
 
   return (
     <div className="chat">
@@ -83,10 +126,10 @@ export default function Chat() {
         <>
           <div className="top">
             <div className="user-name">
-              <img src={user} alt="" />
+              <img src={coversation.profilepic} alt="" />
               <div className="text">
-                <h2>To:{coversation.username}</h2>
-                <p>Lorem ipsum, dolor sit</p>
+                <h2>{coversation.username}</h2>
+                <p>Last seen :</p>
               </div>
             </div>
             <div className="address">
@@ -94,33 +137,17 @@ export default function Chat() {
               <FaVideo />
             </div>
           </div>
-          <div className="middle" onClick={removeEmoji}>
-            {allmessages?.length > 0 ? (
-              allmessages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`send-message ${
-                    message.senderId === authUser._id ? "own" : ""
-                  }`}
-                >
-                  {message.senderId !== authUser._id && (
-                    <img src={user} alt="user" />
-                  )}
-                  <div className="text">
-                    <p>{message.message}</p>
-                    <span>{formatChatTime(message.timestamp)}</span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>Send a message to start the conversation</p>
-            )}
-            <div ref={endRef}></div>
-          </div>
-
+          {loading ? (
+            <p className="updating">Updating....</p>
+          ) : (
+            <div className="middle" onClick={removeEmoji}>
+              <ChatForm message={message}/>
+              <div ref={endRef}></div>
+            </div>
+          )}
           <div className="bottom">
             <div className="cameras">
-              <IoCamera />
+              <IoCamera  onClick={handleGalleryClick}/>
               <IoMdPhotos />
               <MdKeyboardVoice />
             </div>
@@ -132,7 +159,13 @@ export default function Chat() {
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
                 onClick={removeEmoji}
+                onKeyDown={handleKeyPress}
               />
+             <input type="file"
+             style={{display:'none'}}
+             onChange={handleFileChange}
+             id="photo"
+             />
             </div>
             <div className="send">
               <span>
@@ -145,7 +178,7 @@ export default function Chat() {
               </span>
               <span>
                 {isloading ? (
-                  <ClipLoader />
+                  <ClipLoader size={14} color="yellow"/>
                 ) : (
                   <IoMdSend
                     onClick={() => {

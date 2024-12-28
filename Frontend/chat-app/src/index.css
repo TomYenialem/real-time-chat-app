@@ -38,4 +38,12 @@ body{
 
 }
 
-
+@media (max-width:769px){
+	.container{
+    width: 100vw;
+    height: 100vh;
+  }
+  .body-lists:last-child{
+    display: none;
+  }
+}

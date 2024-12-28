@@ -141,18 +141,10 @@ cursor: pointer;
     line-height: 1.4;
 }
 
-
-
 .send-message {
-  max-width: 70%;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  text-align: start;
-  background-color: #121212;
-  padding: 10px;
-  border-radius: 10px;
-  position: relative;
+  max-width: 70%; /* Prevent the text from taking up too much space */
+  word-break: break-word; /* Break long words onto the next line */
+  word-wrap: break-word;
 }
 
 .send-message img {
@@ -163,13 +155,31 @@ cursor: pointer;
 }
 
 .send-message.own {
-  align-self: flex-end;
-  background-color: #1a73e8; /* Sent message background */
+  align-self: flex-start;
+  background-color: #434a52; /* Sent message background */
   color: white;
+  max-width: 80%; /* Limit the width of messages */
+  word-wrap: break-word; /* Ensure long words break to the next line */
+  word-break: break-word;
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+}
+.send-message.reciver {
+   align-self: flex-end;
+  background-color:  #1a73e8; /* Sent message background */
+  color: white;
+  max-width: 80%; /* Limit the width of messages */
+  word-wrap: break-word; /* Ensure long words break to the next line */
+  word-break: break-word;
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
 }
 
 .send-message.own .text {
-  text-align: right;
+  /* text-align: right; */
+  font-size: 13px;
 }
 
 .text {
@@ -183,7 +193,7 @@ cursor: pointer;
 }
 
 .text span {
-  font-size: 12px;
+
   color: #aaa;
 }
 
@@ -191,22 +201,49 @@ cursor: pointer;
   content: "";
   position: absolute;
   right: -10px;
-  top: 28px;
+  top: 30px;
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 8px 0 8px 10px;
-  border-color: transparent transparent transparent #1a73e8;
+  border-color: transparent transparent transparent #434a52;
 }
 
-.send-message:not(.own)::after {
+.send-message.reciver::after {
   content: "";
   position: absolute;
   left: -10px;
-  top: 10px;
+  top: 30px;
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 8px 10px 8px 0;
-  border-color: transparent #121212 transparent transparent;
+  border-color: transparent #1a73e8 transparent transparent;
+}
+
+.updating{
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    height: 65vh;
+    background-color: transparent
+  
+}
+.start_message{
+
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0,0,0,.5);
+    flex-direction: column;
+    gap: 10px;
+}
+.start_message span{
+    color: yellow;
 }
