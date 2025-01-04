@@ -4,12 +4,12 @@ This is a real-time chat application built with **React** for the frontend and *
 
 ## Features
 
-- **Real-time Messaging**: Powered by Socket.IO for seamless communication between users.
+- **Real-time Messaging**: Powered by `Socket.IO` for seamless communication between users.
 - **User Authentication**: Secure login and registration system with JWT and bcryptjs for password encryption.
 - **Emoji Picker**: Integration with the `emoji-picker-react` library to add fun emoji support to messages.
 - **Responsive UI**: Built using React, ensuring a smooth and responsive chat interface across all devices.
-- **Notifications**: Real-time notifications for incoming messages using `react-toastify`.
-- **Persistent Data**: MongoDB is used to store user data and chat history.
+- **Notifications**: Real-time notifications for incoming messages using react-toastify.
+- **Persistent Data**: `MongoDB` is used to store user data and chat history.
 
 ## Tech Stack
 
@@ -24,11 +24,11 @@ This is a real-time chat application built with **React** for the frontend and *
 
 ### Backend
 
-- **Node.js & Express**: Server-side framework for building REST APIs.
+- **Node.js & Express**: Server-side framework for building `REST APIs`.
 - **Socket.IO**: For establishing a WebSocket connection for real-time messaging.
 - **MongoDB & Mongoose**: Database for storing user and chat data.
 - **bcryptjs**: For hashing passwords before storing them in the database.
-- **jsonwebtoken (JWT)**: For secure authentication and token generation.
+- **jsonwebtoken (JWT)**: For secure authentication and `token generation`.
 
 ### Utilities
 
